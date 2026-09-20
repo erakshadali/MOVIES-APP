@@ -1,7 +1,21 @@
 import { useEffect, useRef, useState } from 'react'
 import { Link, NavLink, useLocation, useNavigate, useSearchParams } from 'react-router-dom'
-import { Search, Home, Tv, Film, Flame, Bookmark } from 'lucide-react'
+import {
+  Search,
+  Home,
+  Tv,
+  Film,
+  Flame,
+  Bookmark,
+  ChevronDown,
+  Pencil,
+  Info,
+  Users,
+  X,
+} from 'lucide-react'
 import { useProfile } from '../context/ProfileContext.jsx'
+import { useDismiss } from '../hooks/useDismiss.js'
+import Notifications from './Notifications.jsx'
 import './Navbar.css'
 
 const LINKS = [
@@ -20,6 +34,7 @@ export default function Navbar() {
 
   const [scrolled, setScrolled] = useState(false)
   const [profileOpen, setProfileOpen] = useState(false)
+  const [browseOpen, setBrowseOpen] = useState(false)
   const [searchOpen, setSearchOpen] = useState(false)
   const urlQuery = params.get('q') || ''
   const [query, setQuery] = useState(urlQuery)
@@ -27,6 +42,10 @@ export default function Navbar() {
   const onSearch = location.pathname === '/search'
   const searchInputRef = useRef(null)
   const profileRef = useRef(null)
+  const browseRef = useRef(null)
+
+  useDismiss(profileRef, profileOpen, () => setProfileOpen(false))
+  useDismiss(browseRef, browseOpen, () => setBrowseOpen(false))
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 10)
@@ -38,16 +57,8 @@ export default function Navbar() {
   // close menus whenever the route changes
   useEffect(() => {
     setProfileOpen(false)
+    setBrowseOpen(false)
   }, [location.pathname])
-
-  useEffect(() => {
-    if (!profileOpen) return
-    const onClick = (e) => {
-      if (!profileRef.current?.contains(e.target)) setProfileOpen(false)
-    }
-    document.addEventListener('mousedown', onClick)
-    return () => document.removeEventListener('mousedown', onClick)
-  }, [profileOpen])
 
   // press "/" anywhere to start searching
   useEffect(() => {
@@ -76,11 +87,21 @@ export default function Navbar() {
 
   function openSearch() {
     setSearchOpen(true)
+    setProfileOpen(false)
+    setBrowseOpen(false)
     setTimeout(() => searchInputRef.current?.focus(), 0)
   }
 
   function handleSearchBlur() {
-    if (!query.trim()) setSearchOpen(false)
+    // clicking the clear button blurs the field first; keep the box open then
+    setTimeout(() => {
+      if (document.activeElement !== searchInputRef.current && !query.trim()) setSearchOpen(false)
+    }, 120)
+  }
+
+  function clearSearch() {
+    setQuery('')
+    searchInputRef.current?.focus()
   }
 
   function handleSearchKey(e) {
@@ -93,6 +114,9 @@ export default function Navbar() {
 
   const linkClass = ({ isActive }) => (isActive ? 'nav-link active' : 'nav-link')
   const bottomClass = ({ isActive }) => (isActive ? 'bottom-link active' : 'bottom-link')
+  const activeLink = LINKS.find((l) =>
+    l.end ? location.pathname === l.to : location.pathname.startsWith(l.to)
+  )
 
   return (
     <>
@@ -101,6 +125,7 @@ export default function Navbar() {
           MOVIEFLIX
         </Link>
 
+        {/* wide screens: all the links in a row */}
         <nav className="nav-links" aria-label="Main">
           {LINKS.map(({ to, label, end }) => (
             <NavLink key={to} to={to} end={end} className={linkClass}>
@@ -108,6 +133,29 @@ export default function Navbar() {
             </NavLink>
           ))}
         </nav>
+
+        {/* mid-size screens: the same links folded into a "Browse" menu, like Netflix */}
+        <div className="browse-menu" ref={browseRef}>
+          <button
+            className="browse-btn"
+            onClick={() => setBrowseOpen((o) => !o)}
+            aria-haspopup="true"
+            aria-expanded={browseOpen}
+          >
+            {activeLink?.label || 'Browse'}
+            <ChevronDown size={16} aria-hidden="true" className={browseOpen ? 'flip' : ''} />
+          </button>
+          {browseOpen && (
+            <div className="dropdown browse-dropdown" role="menu">
+              <span className="dd-arrow dd-arrow-left" aria-hidden="true" />
+              {LINKS.map(({ to, label, end }) => (
+                <NavLink key={to} to={to} end={end} className={linkClass} role="menuitem">
+                  {label}
+                </NavLink>
+              ))}
+            </div>
+          )}
+        </div>
 
         <div className="navbar-actions">
           <div className={`search-box ${searchOpen ? 'open' : ''}`}>
@@ -125,21 +173,31 @@ export default function Navbar() {
               aria-label="Search movies, TV shows and people"
               tabIndex={searchOpen ? 0 : -1}
             />
+            {searchOpen && query && (
+              <button className="search-clear" onClick={clearSearch} aria-label="Clear search">
+                <X size={16} />
+              </button>
+            )}
           </div>
+
+          <Notifications />
 
           <div className="profile-menu" ref={profileRef}>
             <button
-              className="avatar"
-              style={{ background: current?.color }}
-              onClick={() => setProfileOpen((open) => !open)}
+              className="profile-btn"
+              onClick={() => setProfileOpen((o) => !o)}
               aria-haspopup="menu"
               aria-expanded={profileOpen}
               aria-label={`Profile menu for ${current?.name}`}
             >
-              {current?.name?.[0]?.toUpperCase()}
+              <span className="avatar" style={{ backgroundColor: current?.color }}>
+                {current?.name?.[0]?.toUpperCase()}
+              </span>
+              <ChevronDown size={16} aria-hidden="true" className={`caret ${profileOpen ? 'flip' : ''}`} />
             </button>
             {profileOpen && (
-              <div className="profile-dropdown" role="menu">
+              <div className="dropdown profile-dropdown" role="menu">
+                <span className="dd-arrow" aria-hidden="true" />
                 {profiles
                   .filter((p) => p.id !== current?.id)
                   .map((p) => (
@@ -149,7 +207,7 @@ export default function Navbar() {
                       role="menuitem"
                       onClick={() => selectProfile(p.id)}
                     >
-                      <span className="avatar small" style={{ background: p.color }}>
+                      <span className="avatar small" style={{ backgroundColor: p.color }}>
                         {p.name[0]?.toUpperCase()}
                       </span>
                       {p.name}
@@ -161,10 +219,14 @@ export default function Navbar() {
                   className="dropdown-item"
                   role="menuitem"
                 >
-                  Manage Profiles
+                  <Pencil size={18} aria-hidden="true" /> Manage Profiles
                 </Link>
-                <Link to="/profiles" className="dropdown-item dropdown-switch" role="menuitem">
-                  Switch Profile
+                <div className="dd-sep" />
+                <Link to="/welcome" className="dropdown-item" role="menuitem">
+                  <Info size={18} aria-hidden="true" /> About MovieFlix
+                </Link>
+                <Link to="/profiles" className="dropdown-item" role="menuitem">
+                  <Users size={18} aria-hidden="true" /> Switch Profile
                 </Link>
               </div>
             )}

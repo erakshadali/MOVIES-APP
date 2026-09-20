@@ -72,6 +72,24 @@ img {
   line-height: 1;
 }
 
+/* ---------- Logo ---------- */
+/* a bold wordmark: red gradient with a little depth, like a real streaming logo */
+.brand {
+  display: inline-block;
+  font-family: var(--font-display);
+  font-size: clamp(1.9rem, 3vw, 2.5rem);
+  font-weight: 400;
+  letter-spacing: 0.07em;
+  line-height: 1;
+  color: #e50914;
+  background: linear-gradient(180deg, #ff4a52 0%, #e50914 48%, #a40610 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 2px 0 rgba(0, 0, 0, 0.5)) drop-shadow(0 0 14px rgba(229, 9, 20, 0.28));
+  user-select: none;
+}
+
 /* ---------- App shell ---------- */
 .app-shell {
   min-height: 100vh;

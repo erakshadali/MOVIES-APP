@@ -23,6 +23,10 @@ lucide-react icons and plain CSS.
   from your My List and thumbs-ups.
 - **Rows** — scroll arrows, expanding cards, Top 10 numbered posters, Continue
   Watching (the trailer player remembers where you stopped).
+- **Header** — shaded logo, links that fold into a **Browse** menu on mid-size
+  screens, search with a clear button (press `/` to focus it), a **bell** with new
+  and upcoming films, and a profile picture with a dropdown. The bar floats over
+  banners and turns solid as you scroll.
 - **Skeleton loaders**, fade-in images and page transitions.
 
 **Browse & discover**

@@ -7,38 +7,57 @@
   height: var(--nav-h);
   display: flex;
   align-items: center;
-  gap: 32px;
+  gap: clamp(16px, 2.6vw, 38px);
   padding: 0 var(--gutter);
   padding-top: env(safe-area-inset-top, 0px);
-  background: linear-gradient(180deg, rgba(0, 0, 0, 0.85), transparent);
-  transition: background 0.3s ease;
+  background-color: transparent;
+  transition: background-color 0.4s ease;
+}
+
+/* a soft dark fade behind the header while it floats over a banner; it melts
+   into a solid bar once you scroll */
+.navbar::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: calc(100% + 36px);
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.5) 60%, transparent 100%);
+  opacity: 1;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+  z-index: -1;
 }
 
 .navbar.solid {
-  background: var(--bg);
+  background-color: var(--bg);
 }
 
-.brand {
-  font-family: var(--font-display);
-  font-size: clamp(1.7rem, 3vw, 2.2rem);
-  letter-spacing: 0.05em;
-  color: var(--accent);
-  line-height: 1;
+.navbar.solid::before {
+  opacity: 0;
 }
 
+.navbar.solid {
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+/* ---------- links ---------- */
 .nav-links {
   display: flex;
+  align-items: center;
   gap: 20px;
 }
 
 .nav-link {
-  font-size: 0.9rem;
+  font-size: 0.875rem;
+  font-weight: 500;
   color: #e5e5e5;
   transition: color 0.2s ease;
 }
 
 .nav-link:hover {
-  color: var(--text-muted);
+  color: #b3b3b3;
 }
 
 .nav-link.active {
@@ -46,23 +65,84 @@
   font-weight: 700;
 }
 
+/* "Browse" menu: takes over from the row of links on mid-size screens */
+.browse-menu {
+  display: none;
+  position: relative;
+}
+
+.browse-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 0;
+  background: transparent;
+  border: none;
+  color: #fff;
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.browse-dropdown {
+  left: -18px;
+  right: auto;
+  min-width: 190px;
+  text-align: center;
+}
+
+.browse-dropdown .nav-link {
+  display: block;
+  padding: 11px 20px;
+}
+
+.browse-dropdown .nav-link:hover {
+  background: #1f1f1f;
+  color: #fff;
+}
+
+/* ---------- right-hand side ---------- */
 .navbar-actions {
   margin-left: auto;
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 4px;
+}
+
+.icon-btn {
+  position: relative;
+  display: inline-grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  background: transparent;
+  border: none;
+  border-radius: 50%;
+  color: #fff;
+  transition: background 0.15s ease;
+}
+
+.icon-btn:hover {
+  background: rgba(255, 255, 255, 0.12);
 }
 
 .search-box {
   display: flex;
   align-items: center;
   border: 1px solid transparent;
+  border-radius: 2px;
   transition: border-color 0.2s ease, background 0.2s ease;
 }
 
 .search-box.open {
-  background: rgba(0, 0, 0, 0.75);
-  border-color: #fff;
+  background: rgba(0, 0, 0, 0.78);
+  border-color: rgba(255, 255, 255, 0.85);
+}
+
+.search-box .icon-btn {
+  width: 38px;
+  height: 36px;
+  border-radius: 0;
 }
 
 .search-box input {
@@ -73,67 +153,151 @@
   color: #fff;
   font-size: 0.9rem;
   outline: none;
-  transition: width 0.25s ease, padding 0.25s ease;
+  transition: width 0.28s ease, padding 0.28s ease;
 }
 
 .search-box.open input {
-  width: min(220px, 40vw);
-  padding: 6px 8px 6px 0;
+  width: min(230px, 38vw);
+  padding: 6px 4px 6px 0;
 }
 
-.icon-btn {
+.search-box input:focus-visible {
+  outline: none; /* the box already gets a white border while open */
+}
+
+.search-box input::-webkit-search-cancel-button {
+  display: none;
+}
+
+.search-clear {
+  display: inline-grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  margin-right: 2px;
+  padding: 0;
+  background: transparent;
+  border: none;
+  color: #ddd;
+}
+
+.search-clear:hover {
+  color: #fff;
+}
+
+/* notifications bell */
+.notif {
+  position: relative;
+}
+
+.bell-dot {
+  position: absolute;
+  top: 8px;
+  right: 9px;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 0 2px #0d0d0d;
+}
+
+/* profile picture with a small arrow */
+.profile-menu {
+  position: relative;
+  margin-left: 6px;
+}
+
+.profile-btn {
   display: inline-flex;
   align-items: center;
-  justify-content: center;
+  gap: 6px;
+  padding: 0;
   background: transparent;
   border: none;
   color: #fff;
-  padding: 4px 8px;
-  min-width: 40px;
-  min-height: 40px;
-}
-
-.profile-menu {
-  position: relative;
 }
 
 .avatar {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 32px;
-  height: 32px;
-  border-radius: 4px;
-  border: none;
+  width: 34px;
+  height: 34px;
+  border-radius: 5px;
   color: #fff;
   font-weight: 700;
-  font-size: 0.95rem;
+  font-size: 1rem;
+  background-image: linear-gradient(160deg, rgba(255, 255, 255, 0.24), rgba(0, 0, 0, 0.2));
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.12);
 }
 
 .avatar.small {
-  width: 26px;
-  height: 26px;
-  font-size: 0.8rem;
+  width: 28px;
+  height: 28px;
+  font-size: 0.85rem;
   flex: 0 0 auto;
 }
 
-.profile-dropdown {
+.caret,
+.browse-btn svg {
+  transition: transform 0.2s ease;
+}
+
+.profile-btn:hover .caret,
+.flip {
+  transform: rotate(180deg);
+}
+
+/* ---------- dropdown menus ---------- */
+.dropdown {
   position: absolute;
-  top: calc(100% + 12px);
+  top: calc(100% + 14px);
   right: 0;
-  min-width: 200px;
+  z-index: 5;
+  min-width: 220px;
   padding: 8px 0;
-  background: rgba(0, 0, 0, 0.92);
-  border: 1px solid #333;
+  background: #0c0c0c;
+  border: 1px solid #2f2f2f;
   border-radius: 4px;
+  box-shadow: 0 14px 36px rgba(0, 0, 0, 0.65);
+  animation: dd-in 0.16s ease both;
+}
+
+@keyframes dd-in {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* the little pointer on top of a menu */
+.dd-arrow {
+  position: absolute;
+  top: -7px;
+  right: 20px;
+  width: 12px;
+  height: 12px;
+  background: #0c0c0c;
+  border-top: 1px solid #2f2f2f;
+  border-left: 1px solid #2f2f2f;
+  transform: rotate(45deg);
+}
+
+.dd-arrow-left {
+  right: auto;
+  left: 28px;
 }
 
 .dropdown-item {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
   width: 100%;
-  padding: 9px 16px;
+  padding: 10px 18px;
   background: transparent;
   border: none;
   color: #fff;
@@ -142,13 +306,105 @@
 }
 
 .dropdown-item:hover {
-  text-decoration: underline;
+  background: #1f1f1f;
 }
 
-.dropdown-switch {
-  border-top: 1px solid #333;
-  margin-top: 6px;
-  padding-top: 12px;
+.dropdown-item svg {
+  flex: 0 0 auto;
+  color: #d0d0d0;
+}
+
+.dd-sep {
+  height: 1px;
+  margin: 6px 0;
+  background: #333;
+}
+
+/* notifications dropdown */
+.notif-dropdown {
+  right: -64px;
+  width: min(370px, calc(100vw - 24px));
+  padding: 0 0 6px;
+}
+
+.notif-dropdown .dd-arrow {
+  right: 80px;
+}
+
+.notif-head {
+  margin: 0;
+  padding: 14px 18px 10px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  border-bottom: 1px solid #262626;
+}
+
+.notif-empty {
+  margin: 0;
+  padding: 18px;
+  font-size: 0.88rem;
+  color: var(--text-muted);
+}
+
+.notif-loading {
+  display: grid;
+  gap: 10px;
+  padding: 12px 16px;
+}
+
+.notif-skel {
+  height: 60px;
+}
+
+.notif-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 18px;
+  color: #fff;
+  border-bottom: 1px solid #1b1b1b;
+  transition: background 0.15s ease;
+}
+
+.notif-item:last-child {
+  border-bottom: none;
+}
+
+.notif-item:hover {
+  background: #1a1a1a;
+}
+
+.notif-item img {
+  flex: 0 0 auto;
+  width: 108px;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  border-radius: 3px;
+  background: #222;
+}
+
+.notif-text {
+  display: grid;
+  gap: 3px;
+  min-width: 0;
+}
+
+.notif-text strong {
+  font-size: 0.9rem;
+  line-height: 1.25;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.notif-text span {
+  font-size: 0.78rem;
+  color: var(--text-muted);
 }
 
 /* ---------- bottom tab bar (phones only) ---------- */
@@ -190,12 +446,23 @@
   color: var(--accent);
 }
 
-@media (max-width: 720px) {
-  .navbar {
-    gap: 12px;
+/* ---------- screen sizes ---------- */
+@media (max-width: 960px) {
+  .nav-links {
+    display: none;
   }
 
-  .nav-links {
+  .browse-menu {
+    display: block;
+  }
+}
+
+@media (max-width: 720px) {
+  .navbar {
+    gap: 8px;
+  }
+
+  .browse-menu {
     display: none;
   }
 
@@ -203,8 +470,33 @@
     display: grid;
   }
 
+  .profile-btn .caret {
+    display: none;
+  }
+
+  /* the notifications list spans the phone screen instead of hanging off the bell */
+  .notif {
+    position: static;
+  }
+
+  .notif-dropdown {
+    position: fixed;
+    top: calc(var(--nav-h) + 6px);
+    left: 12px;
+    right: 12px;
+    width: auto;
+    max-height: 70vh;
+    overflow-y: auto;
+  }
+
+  .notif-dropdown .dd-arrow {
+    display: none;
+  }
+
   /* while searching, the field takes over the whole bar */
-  .navbar.searching .brand {
+  .navbar.searching .brand,
+  .navbar.searching .notif,
+  .navbar.searching .profile-menu {
     visibility: hidden;
   }
 
@@ -222,9 +514,5 @@
     width: auto;
     min-width: 0;
     font-size: 1rem; /* 16px stops iOS zooming into the field */
-  }
-
-  .navbar.searching .profile-menu {
-    visibility: hidden;
   }
 }
