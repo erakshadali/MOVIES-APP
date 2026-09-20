@@ -1,21 +1,31 @@
 import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { backdropUrl, getVideos, youtubeTrailerKey } from '../api/tmdb.js'
+import { Play, Info, Plus, Check, Volume2, VolumeX } from 'lucide-react'
+import { backdropUrl } from '../api/tmdb.js'
 import { itemPath, mediaTypeOf } from '../lib/movie.js'
+import {
+  canAutoplayPreviews,
+  getTrailerKey,
+  setYouTubeMuted,
+  trailerEmbedUrl,
+} from '../lib/trailer.js'
 import { useMyList } from '../context/MyListContext.jsx'
 import { usePlayer } from '../context/PlayerContext.jsx'
+import { useTitleModal } from '../context/TitleModalContext.jsx'
 import './Hero.css'
 
-// Autoplaying a muted trailer is heavy on phones and unwelcome with reduced
-// motion, so those get the still backdrop only.
+// A full-screen background trailer is heavy on phones, so they get the still
+// backdrop only (as do people who asked for less motion or less data).
 const allowVideo =
   typeof window !== 'undefined' &&
-  !window.matchMedia('(prefers-reduced-motion: reduce)').matches &&
+  canAutoplayPreviews() &&
   !window.matchMedia('(max-width: 720px)').matches
 
-export default function Hero({ movie }) {
+// rankLabel: e.g. "#2 in Movies Today", shown as a Top 10 badge
+export default function Hero({ movie, rankLabel }) {
   const { play } = usePlayer()
   const { isInList, toggleList } = useMyList()
+  const modal = useTitleModal()
   const heroRef = useRef(null)
   const frameRef = useRef(null)
 
@@ -30,9 +40,7 @@ export default function Hero({ movie }) {
     setMuted(true)
     if (!allowVideo) return
     let cancelled = false
-    getVideos(mediaTypeOf(movie), movie.id)
-      .then((data) => !cancelled && setTrailerKey(youtubeTrailerKey(data)))
-      .catch(() => {})
+    getTrailerKey(mediaTypeOf(movie), movie.id).then((key) => !cancelled && setTrailerKey(key))
     return () => {
       cancelled = true
     }
@@ -60,11 +68,14 @@ export default function Hero({ movie }) {
 
   function toggleMute() {
     const next = !muted
-    frameRef.current?.contentWindow?.postMessage(
-      JSON.stringify({ event: 'command', func: next ? 'mute' : 'unMute', args: [] }),
-      '*'
-    )
+    setYouTubeMuted(frameRef.current, next)
     setMuted(next)
+  }
+
+  function openInfo(e) {
+    if (!modal || e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return
+    e.preventDefault()
+    modal.open(movie)
   }
 
   const inList = isInList(movie)
@@ -82,7 +93,7 @@ export default function Hero({ movie }) {
         <iframe
           ref={frameRef}
           className={`hero-video ${videoShown ? 'shown' : ''}`}
-          src={`https://www.youtube.com/embed/${trailerKey}?autoplay=1&mute=1&controls=0&loop=1&playlist=${trailerKey}&modestbranding=1&rel=0&playsinline=1&disablekb=1&iv_load_policy=3&cc_load_policy=0&fs=0&enablejsapi=1`}
+          src={trailerEmbedUrl(trailerKey)}
           title={`${movie.title} trailer`}
           allow="autoplay; encrypted-media"
           tabIndex={-1}
@@ -93,6 +104,16 @@ export default function Hero({ movie }) {
       <div className="hero-fade" />
 
       <div className="hero-content">
+        {rankLabel && (
+          <p className="hero-rank">
+            <span className="hero-rank-mark" aria-hidden="true">
+              TOP
+              <br />
+              10
+            </span>
+            <span>{rankLabel}</span>
+          </p>
+        )}
         <h1 className="hero-title">{movie.title}</h1>
         <p className="hero-meta">
           {match && <span className="hero-match">{match}</span>}
@@ -101,28 +122,28 @@ export default function Hero({ movie }) {
         <p className="hero-overview">{movie.overview}</p>
         <div className="hero-actions">
           <button className="btn btn-play" onClick={() => play(movie)}>
-            <span aria-hidden="true">▶</span> Play
+            <Play size={22} fill="currentColor" aria-hidden="true" /> Play
           </button>
-          <Link to={itemPath(movie)} className="btn btn-secondary">
-            <span aria-hidden="true">ⓘ</span> More Info
+          <Link to={itemPath(movie)} onClick={openInfo} className="btn btn-secondary">
+            <Info size={22} aria-hidden="true" /> More Info
           </Link>
           <button
             className="btn btn-secondary btn-icon"
             onClick={() => toggleList(movie)}
             aria-label={inList ? 'Remove from My List' : 'Add to My List'}
           >
-            {inList ? '✓' : '+'}
+            {inList ? <Check size={22} /> : <Plus size={22} />}
           </button>
         </div>
       </div>
 
       {videoShown && (
         <button
-          className="hero-mute"
+          className="hero-mute circle-btn"
           onClick={toggleMute}
           aria-label={muted ? 'Unmute trailer' : 'Mute trailer'}
         >
-          {muted ? '🔇' : '🔊'}
+          {muted ? <VolumeX size={20} /> : <Volume2 size={20} />}
         </button>
       )}
     </header>

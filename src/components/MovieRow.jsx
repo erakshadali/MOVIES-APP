@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import { ChevronLeft, ChevronRight } from 'lucide-react'
 import MovieCard from './MovieCard.jsx'
 import PersonCard from './PersonCard.jsx'
 import { itemKey } from '../lib/movie.js'
@@ -32,7 +33,7 @@ export default function MovieRow({ title, movies, variant = 'landscape', progres
   if (!movies || movies.length === 0) return null
 
   return (
-    <section className="row">
+    <section className="row" aria-label={title}>
       <h2 className="row-title">{title}</h2>
       <div className="row-frame">
         <button
@@ -41,7 +42,7 @@ export default function MovieRow({ title, movies, variant = 'landscape', progres
           hidden={atStart}
           aria-label={`Scroll ${title} left`}
         >
-          ‹
+          <ChevronLeft size={34} />
         </button>
         <div className="row-scroll" ref={scrollRef} onScroll={updateEdges}>
           {movies.map((item, i) => (
@@ -69,7 +70,7 @@ export default function MovieRow({ title, movies, variant = 'landscape', progres
           hidden={atEnd}
           aria-label={`Scroll ${title} right`}
         >
-          ›
+          <ChevronRight size={34} />
         </button>
       </div>
     </section>

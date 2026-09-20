@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react'
 import { useInView } from '../hooks/useInView.js'
 import MovieRow from './MovieRow.jsx'
+import { RowSkeleton } from './Skeleton.jsx'
 
-// A row that only fetches its movies once it scrolls near the viewport.
+// A row that only fetches its movies once it scrolls near the viewport,
+// showing a shimmering placeholder in the meantime.
 export default function LazyMovieRow({ title, fetcher, variant }) {
   const [ref, inView] = useInView('400px')
   const [movies, setMovies] = useState(null)
@@ -20,8 +22,12 @@ export default function LazyMovieRow({ title, fetcher, variant }) {
   }, [inView]) // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
-    <div ref={ref} style={movies ? undefined : { minHeight: 200 }}>
-      {movies && <MovieRow title={title} movies={movies} variant={variant} />}
+    <div ref={ref}>
+      {movies ? (
+        <MovieRow title={title} movies={movies} variant={variant} />
+      ) : (
+        <RowSkeleton count={7} variant={variant === 'person' ? 'poster' : variant} />
+      )}
     </div>
   )
 }

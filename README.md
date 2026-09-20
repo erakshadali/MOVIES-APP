@@ -1,49 +1,51 @@
 # MovieFlix — a Netflix-style movie & TV browser
 
-A Netflix-inspired React app powered by live data from the TMDB API. Built with
-React Router, Context API, and plain CSS.
+A Netflix-inspired React + Vite app powered by live data from the TMDB API.
+It plays **trailers** (from YouTube); for full titles, "Watch now" opens the
+official streaming service. Built with React 18, React Router, Context API,
+lucide-react icons and plain CSS.
 
 ## Features
 
-**Browsing**
-- **Movies and TV shows** everywhere — cards, rows, search, My List, details.
-- **Hero banner** with a muted autoplaying trailer (skipped on phones and with
-  reduced-motion), Play / More Info / My List buttons, mute toggle.
-- **Netflix-style rows** — scroll arrows, cards that expand on hover with
-  play / add / details buttons, match %, year, genres. Rows fetch lazily as you
-  scroll.
-- **Top 10** rows for movies and for TV shows (numbered posters).
+**The Netflix experience**
+- **Landing page** (`/welcome`) — poster wall, feature bands and an FAQ, shown
+  once to first-time visitors.
+- **Profiles** — "Who's watching?" picker (up to 5). Each profile has its own My
+  List, Continue Watching and ratings.
+- **Hero banner** — a featured title with a muted autoplaying trailer, a
+  "Top 10" badge ("#2 in Movies Today"), Play / More Info / My List.
+- **Title pop-up** — click any card and a pop-up opens over the page with an
+  autoplaying trailer, thumbs up / down / love, cast, episodes, "More Like This"
+  and "About". The title is in the URL (`?title=movie-550`), so Back closes it,
+  refresh keeps it, and links can be shared.
+- **Hover previews** — hover a card for a moment and its trailer plays inside it.
+- **Personalised rows** — "Top Picks for <you>" and "Because you liked …", built
+  from your My List and thumbs-ups.
+- **Rows** — scroll arrows, expanding cards, Top 10 numbered posters, Continue
+  Watching (the trailer player remembers where you stopped).
+- **Skeleton loaders**, fade-in images and page transitions.
+
+**Browse & discover**
 - **Movies** and **TV Shows** pages with filters: genre, year, minimum rating,
-  original language, **streaming service + region**, and sort (popularity,
-  rating, newest, title, box office). Filters live in the URL, so a filtered view
-  can be reloaded or shared.
-- **New & Popular** — coming soon, in theatres, on the air, airing today, and
-  trending movies / shows / **people** with a Today / This Week toggle.
-- **Search** across movies, TV shows and people, with All / Movies / TV Shows /
-  People tabs.
+  language, streaming service + region, sort. Filters live in the URL.
+- **New & Popular** with a Today / This Week toggle, incl. trending people.
+- **Search** across movies, TV shows and people.
+- **Details pages** — cast, episodes with a season picker, videos, photos,
+  reviews, companies, franchise collection, age rating, budget / box office.
+- **Actor & crew pages** — biography, "Known for", filterable filmography.
+- **Where to watch** — streaming services by country with a "Watch now" button
+  that opens the official service.
 
-**Details pages**
-- **Movies:** age rating, budget & box office, production companies, franchise
-  **collection** ("Part of the … Collection"), IMDb / website links.
-- **TV shows:** created by, network, status, next episode, and a **season picker
-  with the full episode list** (stills, air dates, ratings, summaries).
-- **Both:** all **videos** (trailers, teasers, clips, featurettes, behind the
-  scenes) that play in-app, cast (each links to their page), photos, reviews,
-  keywords, streaming availability (stream / rent / buy, data from JustWatch),
-  similar and recommended titles.
+**Made for every screen**
+- Phones get a **bottom tab bar** and a bottom-sheet pop-up; tablets and desktops
+  get the full top bar. Tested from 320 px phones to 2560 px ultrawide screens
+  and phones in landscape, with no sideways scrolling.
+- Installable: has a web app manifest and icons ("Add to Home Screen").
+- Pages and the pop-up are code-split and downloaded only when needed.
+- Respects reduced-motion and data-saver settings (no autoplay video then).
 
-**Actor & crew pages** — photo, biography, born / died / age, birthplace,
-IMDb / Instagram / X links, "Known for", a filterable **filmography** by
-department (Acting, Directing, Writing, …), and photos.
-
-**Profiles & personalisation**
-- "Who's watching?" picker: add, rename, delete (up to 5). Each profile has its
-  own **My List** and **Continue Watching**.
-- **Continue Watching** — the trailer player remembers where you stopped and
-  resumes from there; a red progress bar shows on the card.
-
-> Titles play their **YouTube trailers and clips** — TMDB provides metadata, not
-> the films themselves. "Continue Watching" therefore tracks trailer progress.
+> MovieFlix plays trailers only. It does not stream full films, and it is not
+> affiliated with Netflix.
 
 ## Setup
 
@@ -59,43 +61,42 @@ VITE_TMDB_READ_TOKEN=your_token_here
 ```
 
 Get one at TMDB → Settings → API → "API Read Access Token". See `.env.example`.
+`VITE_` variables are baked into the built site, so the token is visible to
+anyone who inspects it; it is read-only and can be regenerated on TMDB.
 
-**Never commit `.env` to a public repo** — it's already in `.gitignore`.
+**Never commit `.env` to a public repo** — it is already in `.gitignore`.
 
 ## Project structure
 
 ```
 src/
-  api/tmdb.js               — every TMDB call; normalises movie/TV/person shapes;
-                              retries dropped connections
-  lib/                      — storage, item helpers (movie+tv keys), region/format
-                              helpers, YouTube API loader
-  hooks/                    — useInView (lazy rows), useGenres (id -> name)
+  api/tmdb.js               — every TMDB call; normalises movie/TV/person shapes
+  lib/                      — storage, item helpers, region helpers, trailer
+                              helpers, watch-provider links, welcome flag
+  hooks/                    — useInView (lazy rows), useGenres
   context/
-    ProfileContext.jsx      — profiles + current profile
-    ProfileScope.jsx        — remounts per-profile state when you switch profiles
-    MyListContext.jsx       — per-profile My List
-    ProgressContext.jsx     — per-profile watch progress
-    PlayerContext.jsx       — play(item, { videoKey }) from anywhere
+    ProfileContext / ProfileScope — profiles; per-profile state remounts on switch
+    MyListContext, ProgressContext, RatingsContext — per-profile data
+    PlayerContext           — trailer player
+    TitleModalContext       — opens/closes the title pop-up via the URL
   components/
-    Navbar, Hero, MovieRow, LazyMovieRow, MovieCard, PersonCard,
-    PlayerModal, VideosSection, SeasonsSection, Loader
+    Navbar (+ phone tab bar), Hero, MovieRow, LazyMovieRow, MovieCard (hover
+    preview), TitleModal, ModalHost, PlayerModal, WhereToWatch, VideosSection,
+    SeasonsSection, PersonCard, Skeleton, FadeImg, Footer, ErrorBoundary
   pages/
-    Home, Browse (movies + TV, filters), Search, NewPopular, MyList,
-    TitleDetails (movies + TV), Person, Profiles
-  App.jsx                   — routes; everything but /profiles needs a profile
+    Home, Browse, Search, NewPopular, MyList, TitleDetails, Person, Profiles,
+    Landing, NotFound
+  App.jsx                   — lazy-loaded routes, layout, error boundary
 ```
 
-Routes: `/`, `/movies`, `/tv`, `/search?q=`, `/new`, `/my-list`, `/movie/:id`,
-`/tv/:id`, `/person/:id`, `/profiles`.
+Routes: `/welcome`, `/profiles`, `/`, `/movies`, `/tv`, `/search?q=`, `/new`,
+`/my-list`, `/movie/:id`, `/tv/:id`, `/person/:id`.
 
 ## Notes
-- Data is stored in the browser's `localStorage`, keyed per profile
-  (`mf_list:<id>`, `mf_progress:<id>`). Movies and TV shows can share numeric
-  ids, so entries are keyed by media type + id. Data saved by earlier versions
-  of the app (movie-only entries, old favorites) is migrated automatically.
-- The region for age ratings and streaming availability is guessed from your
-  browser language (falls back to US); the Movies / TV pages have a region
-  picker for the streaming-service filter.
-- Without a valid API key the app shows a clear error instead of breaking.
-- The app is dark-only, matching the Netflix look.
+- Data is stored in the browser's `localStorage`, per profile (`mf_list:<id>`,
+  `mf_progress:<id>`, `mf_ratings:<id>`). Movies and TV shows can share numeric
+  ids, so entries are keyed by media type + id.
+- Region for age ratings and streaming availability is guessed from your browser
+  language (falls back to US) and can be changed on the page.
+- This product uses the TMDB API but is not endorsed or certified by TMDB.
+  Streaming availability data is from JustWatch.

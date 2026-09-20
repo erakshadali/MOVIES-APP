@@ -12,6 +12,7 @@
   --border: #333333;
   --radius: 6px;
   --nav-h: 68px;
+  --bottom-h: 58px;
   --gutter: 4%;
   --font-display: 'Bebas Neue', sans-serif;
   --font-body: 'Inter', sans-serif;
@@ -27,6 +28,11 @@ html,
 body {
   margin: 0;
   padding: 0;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  -webkit-tap-highlight-color: transparent;
 }
 
 body {
@@ -66,6 +72,33 @@ img {
   line-height: 1;
 }
 
+/* ---------- App shell ---------- */
+.app-shell {
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+}
+
+.app-shell > main {
+  flex: 1;
+  min-width: 0;
+}
+
+/* pages fade in when you navigate (opacity only, so fixed children never shift) */
+.route-fade {
+  animation: route-in 0.35s ease both;
+}
+
+@keyframes route-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
 /* ---------- Buttons ---------- */
 .btn {
   display: inline-flex;
@@ -79,6 +112,10 @@ img {
   font-size: 1rem;
   line-height: 1.2;
   transition: transform 0.12s ease, background 0.15s ease, opacity 0.15s ease;
+}
+
+.btn svg {
+  flex: 0 0 auto;
 }
 
 .btn:active {
@@ -111,7 +148,6 @@ img {
 .btn-icon {
   padding-left: 16px;
   padding-right: 16px;
-  font-size: 1.3rem;
 }
 
 .btn-primary {
@@ -133,6 +169,36 @@ img {
   border-color: #fff;
 }
 
+/* round icon button used on cards, the hero and the title pop-up */
+.circle-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  background: rgba(42, 42, 42, 0.7);
+  color: #fff;
+  transition: border-color 0.15s ease, background 0.15s ease, transform 0.12s ease;
+}
+
+.circle-btn:hover {
+  border-color: #fff;
+  background: rgba(60, 60, 60, 0.9);
+}
+
+.circle-btn:active {
+  transform: scale(0.94);
+}
+
+.circle-btn.is-on {
+  border-color: #fff;
+  background: #fff;
+  color: #000;
+}
+
 .state-message {
   text-align: center;
   padding: 100px 20px;
@@ -150,11 +216,41 @@ img {
   text-decoration: underline;
 }
 
+/* shared by the details page and the title pop-up */
+.details-section-title {
+  margin: 44px 0 16px;
+  font-size: clamp(1.15rem, 1.6vw, 1.5rem);
+  font-weight: 600;
+}
+
+.inline-link {
+  color: var(--text);
+  text-decoration: underline;
+  text-decoration-color: #666;
+  text-underline-offset: 3px;
+}
+
+.inline-link:hover {
+  text-decoration-color: #fff;
+}
+
+/* images fade in once loaded instead of popping in */
+.fade-img {
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.fade-img.is-loaded {
+  opacity: 1;
+}
+
 /* focus visibility for accessibility */
 a:focus-visible,
 button:focus-visible,
 input:focus-visible,
-select:focus-visible {
+select:focus-visible,
+summary:focus-visible,
+[tabindex]:focus-visible {
   outline: 2px solid #fff;
   outline-offset: 2px;
 }
@@ -163,6 +259,14 @@ select:focus-visible {
   * {
     animation: none !important;
     transition: none !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+@media (max-width: 720px) {
+  /* leave room for the bottom tab bar */
+  .app-shell {
+    padding-bottom: calc(var(--bottom-h) + env(safe-area-inset-bottom, 0px));
   }
 }
 

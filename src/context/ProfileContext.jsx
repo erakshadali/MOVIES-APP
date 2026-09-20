@@ -51,6 +51,7 @@ export function ProfileProvider({ children }) {
     if (currentId === id) setCurrentId(null)
     localStorage.removeItem(`mf_list:${id}`)
     localStorage.removeItem(`mf_progress:${id}`)
+    localStorage.removeItem(`mf_ratings:${id}`)
   }
 
   return (

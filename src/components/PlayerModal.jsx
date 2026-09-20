@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import { X } from "lucide-react"
 import { getVideos, youtubeTrailerKey } from '../api/tmdb.js'
 import { loadYouTubeApi } from '../lib/youtube.js'
 import { mediaTypeOf } from '../lib/movie.js'
@@ -107,7 +108,7 @@ export default function PlayerModal({ movie, videoKey, onClose }) {
         <div className="player-bar">
           <span className="player-title">{movie.title}</span>
           <button className="player-close" onClick={onClose} aria-label="Close player">
-            ✕
+            <X size={24} />
           </button>
         </div>
         <div className="player-stage">

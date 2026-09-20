@@ -1,0 +1,40 @@
+.site-footer {
+  margin-top: 40px;
+  padding: 48px var(--gutter) 44px;
+  border-top: 1px solid #262626;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  line-height: 1.6;
+}
+
+.footer-links {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 12px 24px;
+  max-width: 900px;
+  margin-bottom: 28px;
+}
+
+.footer-links a {
+  color: var(--text-muted);
+  text-decoration: underline;
+  text-decoration-color: transparent;
+  text-underline-offset: 3px;
+  transition: color 0.15s ease, text-decoration-color 0.15s ease;
+}
+
+.footer-links a:hover {
+  color: #fff;
+  text-decoration-color: currentColor;
+}
+
+.footer-credit,
+.footer-fine {
+  max-width: 78ch;
+  margin: 0 0 12px;
+}
+
+.footer-fine {
+  font-size: 0.78rem;
+  color: #808080;
+}

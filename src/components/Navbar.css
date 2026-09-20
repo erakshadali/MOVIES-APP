@@ -9,6 +9,7 @@
   align-items: center;
   gap: 32px;
   padding: 0 var(--gutter);
+  padding-top: env(safe-area-inset-top, 0px);
   background: linear-gradient(180deg, rgba(0, 0, 0, 0.85), transparent);
   transition: background 0.3s ease;
 }
@@ -81,12 +82,15 @@
 }
 
 .icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   background: transparent;
   border: none;
   color: #fff;
-  font-size: 1.6rem;
-  line-height: 1;
-  padding: 2px 8px;
+  padding: 4px 8px;
+  min-width: 40px;
+  min-height: 40px;
 }
 
 .profile-menu {
@@ -147,54 +151,80 @@
   padding-top: 12px;
 }
 
-.hamburger {
+/* ---------- bottom tab bar (phones only) ---------- */
+.bottom-nav {
   display: none;
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 100;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  padding: 4px 4px calc(4px + env(safe-area-inset-bottom, 0px));
+  background: rgba(16, 16, 16, 0.94);
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
+  border-top: 1px solid #2a2a2a;
+}
+
+.bottom-link {
+  display: flex;
   flex-direction: column;
+  align-items: center;
   justify-content: center;
-  gap: 5px;
-  width: 34px;
-  height: 34px;
-  background: transparent;
-  border: none;
-  padding: 6px;
+  gap: 3px;
+  min-height: 50px;
+  padding: 4px 2px;
+  border-radius: 8px;
+  color: var(--text-muted);
+  font-size: 0.68rem;
+  font-weight: 500;
+  transition: color 0.15s ease;
 }
 
-.hamburger span {
-  height: 2px;
-  background: #fff;
-  border-radius: 2px;
+.bottom-link.active {
+  color: #fff;
 }
 
-@media (max-width: 860px) {
+.bottom-link.active svg {
+  color: var(--accent);
+}
+
+@media (max-width: 720px) {
   .navbar {
-    gap: 16px;
+    gap: 12px;
   }
 
   .nav-links {
+    display: none;
+  }
+
+  .bottom-nav {
+    display: grid;
+  }
+
+  /* while searching, the field takes over the whole bar */
+  .navbar.searching .brand {
+    visibility: hidden;
+  }
+
+  .search-box.open {
     position: absolute;
-    top: var(--nav-h);
-    left: 0;
-    right: 0;
-    flex-direction: column;
-    gap: 0;
-    background: var(--bg);
-    border-top: 1px solid var(--border);
-    max-height: 0;
-    overflow: hidden;
-    transition: max-height 0.25s ease;
+    left: var(--gutter);
+    right: var(--gutter);
+    top: calc(env(safe-area-inset-top, 0px) + 10px);
+    height: 40px;
+    z-index: 2;
   }
 
-  .nav-links.open {
-    max-height: 320px;
-    border-bottom: 1px solid var(--border);
+  .search-box.open input {
+    flex: 1;
+    width: auto;
+    min-width: 0;
+    font-size: 1rem; /* 16px stops iOS zooming into the field */
   }
 
-  .nav-link {
-    padding: 14px var(--gutter);
-    border-bottom: 1px solid var(--border);
-  }
-
-  .hamburger {
-    display: flex;
+  .navbar.searching .profile-menu {
+    visibility: hidden;
   }
 }

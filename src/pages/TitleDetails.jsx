@@ -14,7 +14,7 @@ import { defaultRegion, formatMoney, formatDate } from '../lib/region.js'
 import { bestWatchOption, hasAvailability } from '../lib/watch.js'
 import { useMyList } from '../context/MyListContext.jsx'
 import { usePlayer } from '../context/PlayerContext.jsx'
-import Loader from '../components/Loader.jsx'
+import { DetailsSkeleton } from '../components/Skeleton.jsx'
 import MovieRow from '../components/MovieRow.jsx'
 import VideosSection from '../components/VideosSection.jsx'
 import SeasonsSection from '../components/SeasonsSection.jsx'
@@ -77,7 +77,7 @@ export default function TitleDetails({ mediaType }) {
     }
   }, [collectionId])
 
-  if (loading) return <Loader />
+  if (loading) return <DetailsSkeleton />
   if (error) {
     return (
       <div className="state-message error">

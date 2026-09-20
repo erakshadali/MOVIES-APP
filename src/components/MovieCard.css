@@ -214,3 +214,43 @@
     -webkit-text-stroke-width: 2px;
   }
 }
+
+/* trailer that plays inside the card while it is hovered */
+.mc-preview {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  max-width: none; /* it is deliberately bigger than the card and scaled down */
+  border: 0;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+.mc-preview.is-on {
+  opacity: 1;
+}
+
+.mc-btn.is-on {
+  background: #fff;
+  border-color: #fff;
+  color: #000;
+}
+
+.mc-btn svg {
+  flex: 0 0 auto;
+}
+
+.mc-btn-more {
+  margin-left: auto;
+}
+
+/* dark fades that hide YouTube's own title bar and bottom bar while a preview plays */
+.mc-preview-mask {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(180deg, rgba(0, 0, 0, 0.92) 0%, rgba(0, 0, 0, 0.5) 12%, transparent 26%),
+    linear-gradient(0deg, rgba(0, 0, 0, 0.92) 0%, rgba(0, 0, 0, 0.5) 14%, transparent 30%);
+}

@@ -315,6 +315,10 @@ export function getPerson(id) {
   })
 }
 
+export function getRecommendations(type, id) {
+  return paged(`/${type}/${id}/recommendations`, {}, type)
+}
+
 export function getVideos(type, id) {
   return tmdbFetch(`/${type}/${id}/videos`)
 }

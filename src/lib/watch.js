@@ -65,6 +65,17 @@ export function bestWatchOption(countryData, title) {
   return null
 }
 
+// Which country's options to show first: the viewer's if it has any,
+// else the US, else the first country that does.
+export function pickWatchRegion(providerRegions, preferred) {
+  const available = Object.keys(providerRegions || {}).filter((code) =>
+    hasAvailability(providerRegions[code])
+  )
+  if (available.includes(preferred)) return preferred
+  if (available.includes('US')) return 'US'
+  return available[0] || preferred
+}
+
 export function regionName(code) {
   try {
     return new Intl.DisplayNames(['en'], { type: 'region' }).of(code) || code

@@ -18,6 +18,8 @@ const RATINGS = [9, 8, 7, 6, 5]
 const THIS_YEAR = new Date().getFullYear()
 const YEARS = Array.from({ length: THIS_YEAR + 1 - 1940 }, (_, i) => THIS_YEAR + 1 - i)
 
+const FILTER_PARAMS = ["genre", "year", "rating", "lang", "provider", "region", "sort"]
+
 // Filters live in the URL, so a filtered view can be reloaded, shared and
 // navigated back to.
 function readFilters(params) {
@@ -35,8 +37,9 @@ function readFilters(params) {
 // mediaType: 'movie' | 'tv'
 export default function Browse({ mediaType }) {
   const [params, setParams] = useSearchParams()
-  const paramString = params.toString()
-  const filters = useMemo(() => readFilters(new URLSearchParams(paramString)), [paramString])
+  // only the filter params count: opening a title pop-up (?title=…) must not reload the list
+  const filterKey = FILTER_PARAMS.map((name) => params.get(name) || "").join("|")
+  const filters = useMemo(() => readFilters(params), [filterKey]) // eslint-disable-line react-hooks/exhaustive-deps
   const isTV = mediaType === 'tv'
 
   const [genres, setGenres] = useState([])

@@ -1,0 +1,28 @@
+.nf {
+  display: grid;
+  justify-items: center;
+  gap: 12px;
+  padding: calc(var(--nav-h) + 90px) var(--gutter) 90px;
+  text-align: center;
+}
+
+.nf-code {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(6rem, 22vw, 12rem);
+  line-height: 0.85;
+  letter-spacing: 0.02em;
+  color: var(--accent);
+}
+
+.nf h1 {
+  margin: 0;
+  font-size: clamp(1.8rem, 5vw, 3rem);
+  font-weight: 700;
+}
+
+.nf p {
+  margin: 0 0 12px;
+  max-width: 44ch;
+  color: var(--text-muted);
+}

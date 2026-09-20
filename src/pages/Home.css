@@ -134,3 +134,11 @@
     row-gap: 20px;
   }
 }
+
+/* phone spacing: the banner already grows with its text, so the first row sits
+   just below it instead of tucking up under it */
+@media (max-width: 720px) {
+  .home-rows.overlap {
+    margin-top: 12px;
+  }
+}

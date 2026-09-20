@@ -3,7 +3,7 @@ import { useParams, Link } from 'react-router-dom'
 import { getPerson, normalize, profileUrl } from '../api/tmdb.js'
 import { itemKey, itemPath } from '../lib/movie.js'
 import { ageFrom, formatDate } from '../lib/region.js'
-import Loader from '../components/Loader.jsx'
+import { DetailsSkeleton } from '../components/Skeleton.jsx'
 import MovieRow from '../components/MovieRow.jsx'
 import './Person.css'
 
@@ -65,7 +65,7 @@ export default function Person() {
     return grouped
   }, [person])
 
-  if (loading) return <Loader />
+  if (loading) return <DetailsSkeleton />
   if (error) {
     return (
       <div className="state-message error">

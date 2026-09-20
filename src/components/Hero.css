@@ -92,28 +92,72 @@
   bottom: 28%;
   width: 42px;
   height: 42px;
-  border-radius: 50%;
-  border: 2px solid rgba(255, 255, 255, 0.6);
-  background: rgba(20, 20, 20, 0.5);
-  color: #fff;
-  font-size: 1rem;
-}
-
-.hero-mute:hover {
-  border-color: #fff;
 }
 
 @media (max-width: 720px) {
+  /* text flows at the bottom of the banner and the banner grows with it, so on a
+     short screen the text can never run up underneath the top bar */
   .hero {
-    height: 70vh;
-    min-height: 420px;
+    height: auto;
+    min-height: 72vh;
+    min-height: 72dvh;
+    display: flex;
+    align-items: flex-end;
+    padding-top: calc(var(--nav-h) + 24px);
   }
 
   .hero-content {
-    bottom: 12%;
+    position: relative;
+    left: auto;
+    bottom: auto;
+    width: 100%;
+    max-width: none;
+    padding: 0 var(--gutter) 34px;
+  }
+
+  .hero-title {
+    font-size: clamp(2.2rem, 11vw, 3.4rem);
+  }
+
+  .hero-overview {
+    -webkit-line-clamp: 3;
+  }
+
+  .hero-actions {
+    gap: 8px;
+  }
+
+  .hero-actions .btn {
+    padding: 10px 16px;
+    font-size: 0.95rem;
   }
 
   .hero-mute {
     display: none;
   }
+}
+
+/* "Top 10" badge above the title */
+.hero-rank {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 12px;
+  font-size: clamp(0.95rem, 1.6vw, 1.25rem);
+  font-weight: 600;
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.7);
+}
+
+.hero-rank-mark {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 34px;
+  border-radius: 3px;
+  background: var(--accent);
+  font-size: 0.62rem;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: 0.02em;
+  text-align: center;
 }
