@@ -169,37 +169,10 @@ a.genre-tag:hover {
   padding: 3px 9px;
 }
 
-.providers {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  margin-top: 22px;
-}
 
-.provider-group {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 10px;
-}
 
-.providers-label {
-  min-width: 52px;
-  color: var(--text-muted);
-  font-size: 0.9rem;
-}
 
-.provider-logo {
-  width: 40px;
-  height: 40px;
-  border-radius: 8px;
-}
 
-.providers-note {
-  margin: 4px 0 0;
-  font-size: 0.75rem;
-  color: var(--text-muted);
-}
 
 .details-section-title {
   margin: 44px 0 16px;

@@ -11,12 +11,14 @@ import {
   tvCertification,
 } from '../api/tmdb.js'
 import { defaultRegion, formatMoney, formatDate } from '../lib/region.js'
+import { bestWatchOption, hasAvailability } from '../lib/watch.js'
 import { useMyList } from '../context/MyListContext.jsx'
 import { usePlayer } from '../context/PlayerContext.jsx'
 import Loader from '../components/Loader.jsx'
 import MovieRow from '../components/MovieRow.jsx'
 import VideosSection from '../components/VideosSection.jsx'
 import SeasonsSection from '../components/SeasonsSection.jsx'
+import WhereToWatch from '../components/WhereToWatch.jsx'
 import './TitleDetails.css'
 
 function PersonLinks({ people }) {
@@ -40,6 +42,7 @@ export default function TitleDetails({ mediaType }) {
 
   const [details, setDetails] = useState(null)
   const [collection, setCollection] = useState(null)
+  const [watchRegion, setWatchRegion] = useState('') // '' = pick automatically
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
   const { isInList, toggleList } = useMyList()
@@ -51,6 +54,7 @@ export default function TitleDetails({ mediaType }) {
     setError('')
     setDetails(null)
     setCollection(null)
+    setWatchRegion('')
     getDetails(mediaType, id)
       .then((data) => !cancelled && setDetails(data))
       .catch((err) => !cancelled && setError(err.message || 'Could not load this title.'))
@@ -120,17 +124,19 @@ export default function TitleDetails({ mediaType }) {
     (c) => c.logo_path
   )
 
-  // streaming availability: the viewer's region, else the US
+  // Where to watch: the viewer's country if it has options, else the US, else
+  // any country that does. The viewer can change it in the section below.
   const providerRegions = details['watch/providers']?.results || {}
-  const providerRegion = providerRegions[region] ? region : providerRegions.US ? 'US' : null
-  const providers = providerRegion ? providerRegions[providerRegion] : null
-  const providerGroups = providers
-    ? [
-        ['Stream', providers.flatrate],
-        ['Rent', providers.rent],
-        ['Buy', providers.buy],
-      ].filter(([, list]) => list?.length)
-    : []
+  const availableRegions = Object.keys(providerRegions).filter((code) =>
+    hasAvailability(providerRegions[code])
+  )
+  const autoRegion = availableRegions.includes(region)
+    ? region
+    : availableRegions.includes('US')
+      ? 'US'
+      : availableRegions[0] || region
+  const activeWatchRegion = availableRegions.includes(watchRegion) ? watchRegion : autoRegion
+  const watchOption = bestWatchOption(providerRegions[activeWatchRegion], details.title)
 
   const next = details.next_episode_to_air
   const facts = [
@@ -241,6 +247,16 @@ export default function TitleDetails({ mediaType }) {
             )}
 
             <div className="action-row">
+              {watchOption && (
+                <a
+                  className="btn btn-primary"
+                  href={watchOption.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {watchOption.label} ↗
+                </a>
+              )}
               {hasTrailer && (
                 <button className="btn btn-play" onClick={() => play(details)}>
                   ▶ Play Trailer
@@ -265,33 +281,16 @@ export default function TitleDetails({ mediaType }) {
                 </a>
               )}
             </div>
-
-            {providerGroups.length > 0 && (
-              <div className="providers">
-                {providerGroups.map(([label, list]) => (
-                  <div className="provider-group" key={label}>
-                    <span className="providers-label">{label}:</span>
-                    {list.map((p) => (
-                      <img
-                        key={p.provider_id}
-                        src={logoUrl(p.logo_path, 'w92')}
-                        alt={p.provider_name}
-                        title={p.provider_name}
-                        className="provider-logo"
-                      />
-                    ))}
-                  </div>
-                ))}
-                <p className="providers-note">
-                  Availability in {providerRegion} · data from{' '}
-                  <a href={providers.link} target="_blank" rel="noreferrer" className="inline-link">
-                    JustWatch
-                  </a>
-                </p>
-              </div>
-            )}
           </div>
         </div>
+
+        <WhereToWatch
+          key={`watch-${mediaType}-${details.id}`}
+          title={details.title}
+          providerRegions={providerRegions}
+          region={activeWatchRegion}
+          onRegionChange={setWatchRegion}
+        />
 
         {facts.length > 0 && (
           <section>
