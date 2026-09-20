@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import { Link } from 'react-router-dom'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import MovieCard from './MovieCard.jsx'
 import PersonCard from './PersonCard.jsx'
@@ -7,7 +8,8 @@ import './MovieRow.css'
 
 // variant: 'landscape' | 'poster' | 'top10' | 'person'
 // progressFor(item) -> 0..100, onRemove(item): optional, for Continue Watching
-export default function MovieRow({ title, movies, variant = 'landscape', progressFor, onRemove }) {
+// titleHref: makes the title a link with an "Explore All" hint (genre rows)
+export default function MovieRow({ title, movies, variant = 'landscape', progressFor, onRemove, titleHref }) {
   const scrollRef = useRef(null)
   const [atStart, setAtStart] = useState(true)
   const [atEnd, setAtEnd] = useState(false)
@@ -34,7 +36,18 @@ export default function MovieRow({ title, movies, variant = 'landscape', progres
 
   return (
     <section className="row" aria-label={title}>
-      <h2 className="row-title">{title}</h2>
+      <h2 className="row-title">
+        {titleHref ? (
+          <Link to={titleHref} className="row-title-link">
+            {title}
+            <span className="row-explore">
+              Explore All <ChevronRight size={15} aria-hidden="true" />
+            </span>
+          </Link>
+        ) : (
+          title
+        )}
+      </h2>
       <div className="row-frame">
         <button
           className="row-arrow row-arrow-left"

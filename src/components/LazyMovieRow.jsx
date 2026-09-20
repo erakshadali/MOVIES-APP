@@ -5,7 +5,7 @@ import { RowSkeleton } from './Skeleton.jsx'
 
 // A row that only fetches its movies once it scrolls near the viewport,
 // showing a shimmering placeholder in the meantime.
-export default function LazyMovieRow({ title, fetcher, variant }) {
+export default function LazyMovieRow({ title, fetcher, variant, titleHref }) {
   const [ref, inView] = useInView('400px')
   const [movies, setMovies] = useState(null)
 
@@ -24,7 +24,7 @@ export default function LazyMovieRow({ title, fetcher, variant }) {
   return (
     <div ref={ref}>
       {movies ? (
-        <MovieRow title={title} movies={movies} variant={variant} />
+        <MovieRow title={title} movies={movies} variant={variant} titleHref={titleHref} />
       ) : (
         <RowSkeleton count={7} variant={variant === 'person' ? 'poster' : variant} />
       )}

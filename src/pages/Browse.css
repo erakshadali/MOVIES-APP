@@ -1,0 +1,146 @@
+/* ---------- banner + rows ---------- */
+.browse-hero {
+  position: relative;
+}
+
+/* the title and Genres menu sit on top of the banner, like Netflix */
+.browse-hero .browse-head {
+  position: absolute;
+  top: calc(var(--nav-h) + 14px);
+  left: var(--gutter);
+  right: var(--gutter);
+  z-index: 6;
+}
+
+.browse-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 24px;
+}
+
+.browse-title {
+  margin: 0;
+  font-size: clamp(1.6rem, 3vw, 2.4rem);
+  font-weight: 700;
+  line-height: 1.1;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.6);
+}
+
+.browse-rows {
+  position: relative;
+  z-index: 2;
+  margin-top: -9vw;
+  padding-bottom: 80px;
+}
+
+/* ---------- grid of matches ---------- */
+.browse-page {
+  padding-top: calc(var(--nav-h) + 28px);
+}
+
+.browse-head-grid {
+  position: relative; /* the phone Genres panel anchors to this bar */
+  padding: 0 var(--gutter) 8px;
+}
+
+.browse-tools {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 14px;
+  margin-left: auto;
+}
+
+.browse-sort {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.browse-sort select {
+  padding: 6px 12px;
+  background: rgba(0, 0, 0, 0.7);
+  color: #fff;
+  border: 1px solid #808080;
+  border-radius: 2px;
+  font-size: 0.9rem;
+}
+
+.browse-sort select:hover,
+.browse-sort select:focus {
+  border-color: #fff;
+}
+
+.tool-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  background: rgba(0, 0, 0, 0.7);
+  border: 1px solid #808080;
+  color: #fff;
+  font-size: 0.9rem;
+}
+
+.tool-btn:hover,
+.tool-btn.is-on {
+  border-color: #fff;
+}
+
+.tool-count {
+  display: inline-grid;
+  place-items: center;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 5px;
+  border-radius: 10px;
+  background: var(--accent);
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+
+.browse-page .filters {
+  padding-top: 8px;
+  animation: filters-in 0.2s ease both;
+}
+
+@keyframes filters-in {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.browse-crumbs {
+  padding: 4px var(--gutter) 0;
+}
+
+.grid-end {
+  height: 1px;
+}
+
+@media (max-width: 720px) {
+  .browse-head-grid .gm-panel {
+    left: var(--gutter);
+    right: var(--gutter);
+  }
+
+  .browse-hero .browse-head {
+    top: calc(var(--nav-h) + 10px);
+  }
+
+  .browse-rows {
+    margin-top: 12px;
+  }
+
+  .browse-tools {
+    margin-left: 0;
+  }
+}

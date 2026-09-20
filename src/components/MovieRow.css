@@ -107,3 +107,38 @@
     margin-bottom: 0;
   }
 }
+
+/* genre rows: the title is a link, and "Explore All" slides out on hover */
+.row-title-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.row-explore {
+  display: inline-flex;
+  align-items: center;
+  max-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #54b9c5;
+  opacity: 0;
+  transition: max-width 0.35s ease, opacity 0.25s ease, margin 0.35s ease;
+}
+
+.row:hover .row-explore,
+.row-title-link:focus-visible .row-explore {
+  max-width: 130px;
+  margin-left: 10px;
+  opacity: 1;
+}
+
+@media (hover: none) {
+  .row-explore {
+    max-width: 130px;
+    margin-left: 8px;
+    opacity: 1;
+  }
+}

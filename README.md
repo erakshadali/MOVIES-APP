@@ -26,8 +26,11 @@ lucide-react icons and plain CSS.
 - **Skeleton loaders**, fade-in images and page transitions.
 
 **Browse & discover**
-- **Movies** and **TV Shows** pages with filters: genre, year, minimum rating,
-  language, streaming service + region, sort. Filters live in the URL.
+- **Movies** and **TV Shows** pages laid out like Netflix: a trailer banner with a
+  **Genres** menu, then rows (Top 10, Trending, Popular, and one row per genre with
+  an "Explore All" link). Choosing a genre or a filter opens a grid with endless
+  scrolling. A **Filters** button adds year, minimum rating, language, streaming
+  service + region and sorting; all of it lives in the URL.
 - **New & Popular** with a Today / This Week toggle, incl. trending people.
 - **Search** across movies, TV shows and people.
 - **Details pages** — cast, episodes with a season picker, videos, photos,
