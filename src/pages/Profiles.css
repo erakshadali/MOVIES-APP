@@ -1,0 +1,144 @@
+.profiles-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 40px;
+  padding: 40px var(--gutter);
+  text-align: center;
+}
+
+.profiles-title {
+  margin: 0;
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  font-weight: 500;
+}
+
+.profile-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: clamp(16px, 3vw, 32px);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.profile-tile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  width: clamp(96px, 14vw, 150px);
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  font-size: clamp(0.9rem, 1.3vw, 1.15rem);
+}
+
+.profile-avatar {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  aspect-ratio: 1;
+  border-radius: 6px;
+  border: 3px solid transparent;
+  color: #fff;
+  font-size: clamp(2.5rem, 6vw, 4.5rem);
+  font-weight: 700;
+  transition: border-color 0.15s ease;
+}
+
+.profile-add {
+  background: transparent;
+  border: 3px dashed #555;
+  color: #777;
+}
+
+.profile-tile:hover,
+.profile-tile:focus-visible {
+  color: #fff;
+}
+
+.profile-tile:hover .profile-avatar:not(.profile-add) {
+  border-color: #fff;
+}
+
+.profile-tile:hover .profile-add {
+  border-color: #fff;
+  color: #fff;
+}
+
+.profile-edit {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 3px;
+  background: rgba(0, 0, 0, 0.55);
+  font-size: 2rem;
+}
+
+.profiles-manage {
+  padding: 10px 28px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.profile-editor-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.85);
+  padding: 16px;
+}
+
+.profile-editor {
+  width: 100%;
+  max-width: 420px;
+  padding: 28px;
+  background: var(--bg);
+  border: 1px solid #333;
+  border-radius: 6px;
+  text-align: left;
+}
+
+.profile-editor h2 {
+  margin: 0 0 18px;
+  font-weight: 500;
+}
+
+.profile-editor input {
+  width: 100%;
+  padding: 12px 14px;
+  background: #333;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  color: #fff;
+  font-size: 1rem;
+}
+
+.profile-editor input:focus {
+  outline: none;
+  border-color: #fff;
+}
+
+.profile-editor-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.profile-editor-note {
+  margin: 16px 0 0;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}

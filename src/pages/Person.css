@@ -1,0 +1,199 @@
+.person-page {
+  padding-top: var(--nav-h);
+  padding-bottom: 80px;
+}
+
+.person-content {
+  padding-top: 24px;
+  padding-bottom: 28px;
+}
+
+.person-lower {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+.person-grid-layout {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 40px;
+  align-items: start;
+}
+
+.person-photo {
+  width: 100%;
+  aspect-ratio: 2 / 3;
+  object-fit: cover;
+  border-radius: var(--radius);
+  background: #222;
+}
+
+.person-facts {
+  margin: 20px 0 0;
+}
+
+.person-facts div {
+  margin-bottom: 14px;
+}
+
+.person-facts dt {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.person-facts dd {
+  margin: 2px 0 0;
+  font-size: 0.92rem;
+  line-height: 1.4;
+}
+
+.person-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+}
+
+.person-links a {
+  font-size: 0.88rem;
+  text-decoration: underline;
+  color: var(--text-muted);
+}
+
+.person-links a:hover {
+  color: #fff;
+}
+
+.person-name {
+  margin: 0 0 8px;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(2.4rem, 6vw, 4rem);
+  letter-spacing: 0.02em;
+  line-height: 1;
+}
+
+.person-h2 {
+  margin: 28px 0 12px;
+}
+
+.person-bio {
+  max-width: 75ch;
+  line-height: 1.7;
+  color: #e0e0e0;
+}
+
+.person-bio p {
+  margin: 0 0 12px;
+}
+
+.person-bio-empty {
+  color: var(--text-muted);
+}
+
+.link-button {
+  padding: 0;
+  background: transparent;
+  border: none;
+  color: #fff;
+  text-decoration: underline;
+  font-size: 0.92rem;
+}
+
+.person-rows {
+  margin-top: 8px;
+}
+
+.filmography-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 28px;
+}
+
+.filmography-head .person-h2 {
+  margin: 0;
+}
+
+.filmography {
+  list-style: none;
+  margin: 16px 0 0;
+  padding: 0;
+}
+
+.film-row {
+  display: flex;
+  gap: 20px;
+  padding: 12px 8px;
+  border-bottom: 1px solid #2a2a2a;
+}
+
+.film-row:hover {
+  background: #1c1c1c;
+}
+
+.film-year {
+  flex: 0 0 48px;
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.film-main {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 10px;
+  min-width: 0;
+}
+
+.film-title {
+  font-weight: 600;
+}
+
+.film-title:hover {
+  text-decoration: underline;
+}
+
+.film-tag {
+  padding: 0 5px;
+  border: 1px solid #666;
+  border-radius: 2px;
+  font-size: 0.68rem;
+  color: var(--text-muted);
+}
+
+.film-role {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
+.person-photos {
+  display: flex;
+  gap: 14px;
+  overflow-x: auto;
+  padding-bottom: 10px;
+}
+
+.person-photos img {
+  flex: 0 0 auto;
+  height: 260px;
+  width: auto;
+  border-radius: var(--radius);
+  background: #222;
+}
+
+@media (max-width: 760px) {
+  .person-grid-layout {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  .person-photo {
+    max-width: 220px;
+    margin: 0 auto;
+  }
+}

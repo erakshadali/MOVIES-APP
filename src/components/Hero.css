@@ -1,0 +1,119 @@
+.hero {
+  position: relative;
+  height: min(56.25vw, 88vh);
+  min-height: 460px;
+  overflow: hidden;
+  background: #000;
+}
+
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center 20%;
+}
+
+/* a 16:9 box centred in the hero and slightly oversized so YouTube's edge
+   UI falls outside the clipped area */
+.hero-video {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  transform: translate(-50%, -50%) scale(1.3);
+  border: 0;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.8s ease;
+}
+
+.hero-video.shown {
+  opacity: 1;
+}
+
+.hero-fade {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(90deg, rgba(20, 20, 20, 0.85) 0%, rgba(20, 20, 20, 0.3) 45%, transparent 70%),
+    linear-gradient(180deg, rgba(20, 20, 20, 0.5) 0%, transparent 25%, transparent 60%, var(--bg) 100%);
+}
+
+.hero-content {
+  position: absolute;
+  left: var(--gutter);
+  bottom: 24%;
+  max-width: min(560px, 90%);
+}
+
+.hero-title {
+  margin: 0 0 12px;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(2.6rem, 6vw, 5.2rem);
+  line-height: 0.95;
+  letter-spacing: 0.02em;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.6);
+}
+
+.hero-meta {
+  display: flex;
+  gap: 12px;
+  margin: 0 0 12px;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.hero-match {
+  color: var(--success);
+}
+
+.hero-overview {
+  margin: 0 0 20px;
+  font-size: clamp(0.9rem, 1.3vw, 1.15rem);
+  line-height: 1.45;
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.7);
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.hero-mute {
+  position: absolute;
+  right: var(--gutter);
+  bottom: 28%;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.6);
+  background: rgba(20, 20, 20, 0.5);
+  color: #fff;
+  font-size: 1rem;
+}
+
+.hero-mute:hover {
+  border-color: #fff;
+}
+
+@media (max-width: 720px) {
+  .hero {
+    height: 70vh;
+    min-height: 420px;
+  }
+
+  .hero-content {
+    bottom: 12%;
+  }
+
+  .hero-mute {
+    display: none;
+  }
+}

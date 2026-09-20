@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 450">
+  <rect width="300" height="450" fill="#1e1a2e"/>
+  <text x="150" y="215" font-family="Inter, sans-serif" font-size="18" fill="#b3aec2" text-anchor="middle">No poster</text>
+  <text x="150" y="240" font-family="Inter, sans-serif" font-size="18" fill="#b3aec2" text-anchor="middle">available</text>
+</svg>

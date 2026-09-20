@@ -1,0 +1,44 @@
+.pc {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  text-align: center;
+  color: var(--text);
+}
+
+.pc-photo {
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+  border-radius: 50%;
+  background: #222;
+  margin-bottom: 6px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.pc:hover .pc-photo,
+.pc:focus-visible .pc-photo {
+  transform: scale(1.05);
+  box-shadow: 0 0 0 3px #fff;
+}
+
+.pc-name {
+  font-size: 0.88rem;
+  font-weight: 600;
+  line-height: 1.25;
+}
+
+.pc-line {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  line-height: 1.25;
+}
+
+/* grid of people (search results) */
+.person-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(clamp(110px, 12vw, 160px), 1fr));
+  gap: 28px 20px;
+  padding: 24px var(--gutter) 60px;
+}

@@ -1,0 +1,109 @@
+.row {
+  position: relative;
+  margin-bottom: 8px;
+}
+
+/* the row being hovered must paint above the rows after it, so an expanded
+   card's info panel isn't covered */
+.row:hover,
+.row:focus-within {
+  z-index: 30;
+}
+
+.row-title {
+  margin: 0 var(--gutter);
+  font-size: clamp(1.05rem, 1.5vw, 1.4rem);
+  font-weight: 600;
+}
+
+.row-frame {
+  position: relative;
+}
+
+/* extra padding gives the scaled card and its info panel room, since a
+   horizontal scroller clips vertically too; the negative margin hands the
+   space back so rows stay close together */
+.row-scroll {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding: 36px var(--gutter) 150px;
+  margin: 0 0 -110px;
+  scroll-snap-type: x proximity;
+  scrollbar-width: none;
+}
+
+.row-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+.row-item {
+  flex: 0 0 clamp(190px, 17vw, 290px);
+  scroll-snap-align: start;
+}
+
+.row-item-poster {
+  flex-basis: clamp(120px, 11vw, 190px);
+}
+
+.row-item-top10 {
+  flex-basis: clamp(200px, 19vw, 300px);
+  margin-right: 8px;
+}
+
+.row-item-person {
+  flex-basis: clamp(96px, 9vw, 140px);
+  margin-right: 12px;
+}
+
+/* the frame is the scroller minus the 110px pulled back by its negative
+   margin, so top/bottom here leave exactly the height of the cards */
+.row-arrow {
+  position: absolute;
+  top: 36px;
+  bottom: 40px;
+  width: var(--gutter);
+  min-width: 36px;
+  border: none;
+  background: rgba(20, 20, 20, 0.6);
+  color: #fff;
+  font-size: 2.2rem;
+  z-index: 25;
+  opacity: 0;
+  transition: opacity 0.2s ease, background 0.2s ease;
+}
+
+.row-arrow[hidden] {
+  display: none;
+}
+
+.row-arrow:hover {
+  background: rgba(20, 20, 20, 0.85);
+}
+
+.row-arrow-left {
+  left: 0;
+  border-radius: 0 var(--radius) var(--radius) 0;
+}
+
+.row-arrow-right {
+  right: 0;
+  border-radius: var(--radius) 0 0 var(--radius);
+}
+
+.row-frame:hover .row-arrow,
+.row-arrow:focus-visible {
+  opacity: 1;
+}
+
+/* touch screens have no hover panel, so no extra room and no arrows */
+@media (hover: none) {
+  .row-arrow {
+    display: none;
+  }
+
+  .row-scroll {
+    padding-bottom: 20px;
+    margin-bottom: 0;
+  }
+}
