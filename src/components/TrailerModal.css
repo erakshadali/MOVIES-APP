@@ -1,0 +1,42 @@
+.trailer-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(10, 8, 16, 0.88);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 200;
+  padding: 20px;
+}
+
+.trailer-box {
+  position: relative;
+  width: 100%;
+  max-width: 900px;
+  aspect-ratio: 16 / 9;
+  background: #000;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.trailer-box iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+.trailer-close {
+  position: absolute;
+  top: -40px;
+  right: 0;
+  background: transparent;
+  border: none;
+  color: #fff;
+  font-size: 1.4rem;
+}
+
+@media (max-width: 640px) {
+  .trailer-close {
+    top: -34px;
+  }
+}

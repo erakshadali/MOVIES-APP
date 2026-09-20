@@ -1,0 +1,41 @@
+.movie-row {
+  margin-bottom: 36px;
+}
+
+.movie-row-title {
+  font-size: 1.6rem;
+  margin: 0 0 14px;
+}
+
+.movie-row-scroll {
+  display: flex;
+  gap: 18px;
+  overflow-x: auto;
+  padding-bottom: 10px;
+  scroll-snap-type: x proximity;
+  -webkit-overflow-scrolling: touch;
+}
+
+.movie-row-scroll::-webkit-scrollbar {
+  height: 6px;
+}
+
+.movie-row-scroll::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 4px;
+}
+
+.movie-row-item {
+  flex: 0 0 165px;
+  scroll-snap-align: start;
+}
+
+@media (max-width: 640px) {
+  .movie-row-item {
+    flex-basis: 130px;
+  }
+
+  .movie-row-title {
+    font-size: 1.3rem;
+  }
+}
